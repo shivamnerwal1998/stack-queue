@@ -1,0 +1,128 @@
+#include<stdlib.h>
+
+
+typedef struct tree
+{
+    int info;
+    struct tree *left;
+    struct tree *right;
+
+}bst;
+
+void insertNode(bst **tree,int element)
+{
+    bst *ptr,*parent,*node;
+    ptr=(bst *)malloc(sizeof(bst));
+    ptr->info=element;
+    ptr->left=NULL;
+    ptr->right=NULL;
+    if(*tree==NULL)
+        *tree=ptr;
+    else
+    {
+        parent=NULL;  //  assigning NULL to parent
+        node=*tree;   // assigning the node  with tree
+        while(node!=NULL)
+        {
+
+            parent=node;
+            if(element< (node->info))
+                node=node->left;
+            else
+                node=node->right;
+
+        }
+        /* After this loop the parent is assigned to last node
+        where element is to be inserted */
+        if(element> (parent->info))
+            parent->right=ptr;
+        else
+            parent->left=ptr;
+
+    }
+
+}
+
+void preOrderTraversal(bst *tree)
+{
+
+    if(tree!= NULL)
+    {
+        printf("%d\t",tree->info);
+        preOrderTraversal(tree->left);
+        preOrderTraversal(tree->right);
+    }
+
+}
+
+
+
+void main()
+{
+    int choice,element ;
+    bst *root;
+    root=NULL; // creation of empty tree
+
+    while(1)
+    {
+        system("cls");
+        printf("MENUE\n");
+        printf("1.\tinsertion\n");
+        printf("2.\ttraversing\n");
+        printf("10.\tExit\n");
+        printf("ENETR CHOICE\n");
+        scanf("%d",&choice);
+
+        switch(choice)
+        {
+            case 1:
+                system("cls");
+                printf("\n\tENTER THE ELEMENT\n ");
+                scanf("%d",&element);
+               insertNode(&root,element); // calling the function to insert the element
+                printf("\nINSERTED\n");
+                break;
+
+            case 2:
+                while(1){
+                    system("cls");
+                    printf("\n\tTRAVERSING\n\n");
+                    printf("1.\tPreOrder Traversing\n");
+                    printf("2.\tInOrder Traversing\n");
+                    printf("3.\tPostOrder Traversing\n");
+                    printf("4.\tEXIT\n");
+                    printf("ENTER YOUR CHOICE");
+                    scanf("%d",&choice);
+                    switch(choice)
+                    {
+                        case 1:
+                           preOrderTraversal(root);
+                            break;
+                        case 2:
+                         //  inOrderTraversal(root);
+                            break;
+                        case 3:
+                       //    postOrderTraversal(root);
+                            break;
+                        case 4:
+                            exit(0);
+
+                        default:
+                            printf("invalid \n");
+                    }
+
+                    getche();
+                }
+                break;
+            case 10:
+                exit (1);
+                break;
+            default:
+                printf("Invalid\n");
+
+
+        }
+        getche();
+
+    }
+}
