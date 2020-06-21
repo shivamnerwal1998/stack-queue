@@ -1,0 +1,136 @@
+/*
+    program to implement stack by linked representation
+*/
+#include<stdlib.h>
+#include<stdio.h>
+typedef struct stackType
+{
+    int data;
+    struct stackType *next;
+}stack;
+
+void createStack(stack **top)
+{
+    *top=NULL;
+
+}
+void destroyStack(stack **top)
+{
+    stack *ptr;
+
+    while(*top!=NULL)
+    {
+          ptr=*top;
+          *top=(*top)->next;
+        free(ptr);
+    }
+}
+int isEmpty(stack *top)
+{
+    if(top==NULL)
+        return 1;
+    else
+        return 0;
+}
+
+void push(stack **top,int element)
+{
+    stack *ptr;
+    ptr=(stack *)malloc(sizeof(stack));
+    ptr->data=element;
+    ptr->next=*top; // ptr is added in starting
+    *top=ptr; // top is pointing to ptr
+
+}
+int pop(stack **top)
+{
+    int temp;
+    stack *ptr;
+    temp=((*top)->data);
+    ptr=*top;
+    *top=(*top)->next; // the first element is inserted in the starting of list
+    free(ptr);
+    return temp;
+
+}
+int peek(stack *top)
+{
+        return ((top)->data);
+}
+
+void main()
+{
+    stack *top;
+    int choice,element,info;
+    while(1)
+    {
+        system("cls");
+        printf("\n\t\tMENUE\n\n");
+        printf("1. createStack\n");
+        printf("2. PUSH\n");
+        printf("3. POP\n");
+        printf("4. PEEK\n");
+        printf("5. ISEMPTY\n");
+        printf("6. DESTROY STACK\n");
+        printf("7. EXIT\n");
+        printf("\n\nENTER CHOICE");
+        scanf("%d",&choice);
+        switch (choice)
+        {
+            case 1:
+                createStack(&top);
+                printf("STACK IS CREATED\n");
+                break;
+
+
+            case 2:
+                system("cls");
+                printf("\nENTER THE ELEMENT\n");
+                scanf("%d",&element);
+                push(&top,element);
+                printf("\n\tINSERTED\n");
+            break;
+            case 3:
+                system("cls");
+                if(isEmpty(top))
+                {
+                    printf("\nSTACK IS EMPTY\n");
+                    break;
+                }
+                printf("poped\n");
+                getch();
+                info=pop(&top);
+                printf("THE ELEMENT ON TOP IS:\t %d\n",info);
+            break;
+            case 4:
+                system("cls");
+                if(isEmpty(top))
+                {
+                    printf("\nSTACK IS EMPTY\n");
+                    break;
+                }
+                info=peek(top);
+                printf("THE ELEMENT ON TOP IS:\t %d\n",info);
+
+            break;
+            case 5:
+                system("cls");
+                isEmpty(top)?printf("STACK IS EMPTY\n"):
+                    printf("STACK CONTAINS ELEMENT\n");
+            break;
+            case 6:
+                destroyStack(&top);
+                system("cls");
+                printf("\nDESTROYED\n");
+            break;
+            case 7:
+                exit(1);
+            default:
+                system("cls");
+                printf("\n\tINVALID\n");
+                printf("\nPress any Key ");
+        }
+        getch();
+
+    }
+}
