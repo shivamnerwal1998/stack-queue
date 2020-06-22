@@ -1,0 +1,145 @@
+#include<stdlib.h>
+#include<stdio.h>
+#include<conio.h>
+
+typedef struct nodeType
+{
+    int info;
+    struct nodeType *next;
+}node;
+
+typedef struct
+{
+    node *front;
+    node *rear;
+}queue;
+
+void createQueue(queue *q)
+{
+    q->front=NULL;
+    q->rear=NULL;
+}
+int isEmpty(queue *q)
+{
+    if(q->rear==NULL)
+        return 1;
+    else
+        return 0;
+
+}
+void enQueue(queue *q,int data)
+{
+    node *ptr;
+    ptr=(node *)malloc(sizeof(node));
+    ptr->info=data;
+    ptr->next=NULL;
+    if(q->rear==NULL)
+        q->front=q->rear=ptr;
+    else
+    {
+        (q->rear)->next=ptr; // because initially q->rear->next=NULL
+        q->rear=ptr; // because ptr is last element
+    }
+}
+int deQueue(queue *q)
+{
+    node *ptr;
+    int temp;
+    temp=(q->front)->info;
+    ptr=q->front;
+    q->front=(q->front)->next;
+    free(ptr);
+    return temp;
+}
+int peek(queue *q)
+{
+
+    return(q->front->info);
+}
+void destroyQueue(queue *q)
+{
+    node *ptr;
+    while(q->front!=NULL)
+    {
+        ptr=q->front;
+        q->front=(q->front)->next;
+        free(ptr);
+    }
+}
+
+void main()
+{
+    queue q;
+    int choice,element,info;
+    while(1)
+    {
+        system("cls");
+        printf("\n\t\tMENUE\n\n");
+        printf("1. createQueue\n");
+        printf("2. enQueue\n");
+        printf("3. deQueue\n");
+        printf("4. peek\n");
+        printf("5. isEmpty\n");
+        printf("6. destroy Queue\n");
+        printf("7. EXIT\n");
+        printf("\n\nENTER CHOICE");
+        scanf("%d",&choice);
+        switch (choice)
+        {
+            case 1:
+                createQueue(&q);
+                printf("Queue IS CREATED\n");
+                break;
+
+
+            case 2:
+                system("cls");
+                printf("\nENTER THE ELEMENT\n");
+                scanf("%d",&element);
+                enQueue(&q,element);
+                printf("\n\tINSERTED\n");
+            break;
+            case 3:
+                system("cls");
+                if(isEmpty(&q))
+                {
+                    printf("\nQueue IS EMPTY\n");
+                    break;
+                }
+                printf("DELETED \n");
+                getch();
+                info=deQueue(&q);
+                printf("THE ELEMENT ON TOP IS:\t %d\n",info);
+            break;
+            case 4:
+                system("cls");
+                if(isEmpty(&q))
+                {
+                    printf("\nQueue IS EMPTY\n");
+                    break;
+                }
+                info=peek(&q);
+                printf("THE ELEMENT ON TOP IS:\t %d\n",info);
+
+            break;
+            case 5:
+                system("cls");
+                isEmpty(&q)?printf("Queue IS EMPTY\n"):
+                    printf("Queue CONTAINS ELEMENT\n");
+            break;
+            case 6:
+                destroyQueue(&q);
+                system("cls");
+                printf("\nDESTROYED\n");
+            break;
+            case 7:
+                exit(1);
+            default:
+                system("cls");
+                printf("\n\tINVALID\n");
+                printf("\nPress any Key ");
+        }
+        getch();
+
+    }
+}
