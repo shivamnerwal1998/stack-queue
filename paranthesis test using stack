@@ -1,0 +1,118 @@
+#include<string.h>
+#include<stdlib.h>
+#include<stdio.h>
+typedef struct stack
+{
+    char info;
+    struct stack *next;
+
+}stack;
+
+int isEmpty(stack *top)
+{
+    if(top==NULL)
+        return 1;
+    else
+        return 0;
+
+}
+
+void push(stack **top,char data)
+{
+    stack *ptr;
+    ptr=(stack*)malloc(sizeof(stack));
+    ptr->info=data;
+    ptr->next=(*top);
+    (*top)=ptr;
+}
+
+char pop(stack **top)
+{
+    stack *ptr;
+    char data;
+    ptr=*top;
+    data=(*top)->info;
+    *top=(*top)->next;
+    free(ptr);
+    return data;
+
+
+}
+int matchBrackets(char exp,char st)
+{
+    char correct;
+    switch (exp)
+    {
+        case ')':
+        correct='(';
+        break;
+
+        case '}':
+        correct='{';
+        break;
+
+        case ']':
+        correct='[';
+        break;
+    }
+    if(st==correct)
+        return 1;
+    else
+        return 0;
+}
+
+void disposeStack(stack **top)
+{
+    stack *ptr;
+    while(top!=NULL)
+    {
+        ptr=*top;
+        (*top)=(*top)->next;
+        free(ptr);
+
+    }
+}
+
+ void bracketChecker(char *str)
+{
+    stack *top;
+    char ch;
+    int i;
+    top=NULL; // empty stack is created
+    for(i=0;str[i]!='\0';i++)
+    {
+        if(str[i]=='(' || str[i]=='[' || str[i]=='{')
+            {push(&top,str[i]);
+
+            }
+        else if(str[i]==')' ||str[i]==']' ||str[i]=='}')
+        {
+            ch=pop(&top);
+
+
+            if(matchBrackets(str[i],ch))
+                continue;
+            else
+            {
+                printf("\nINVALID COMBINATION OF BRACKETS\n");
+                disposeStack(&top);
+                return;
+            }
+        }
+
+    }
+    if(isEmpty(top))
+        printf("\nENTERED EXPRESSION IS CORRECT\n");
+    else
+        printf("INCORRECT\n");
+    disposeStack(&top);
+
+}
+int main()
+{
+    char *str="";
+    str=(char*)malloc(sizeof(char));
+    gets(str);
+    bracketChecker(str);
+
+}
