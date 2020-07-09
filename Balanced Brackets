@@ -1,0 +1,98 @@
+typedef struct stackType
+{
+    int data;
+    struct stackType *next;
+}stack;
+
+void push(stack **top,int element)
+{
+    stack *ptr;
+    ptr=(stack*)malloc(sizeof(stack));
+    ptr->data=element;
+    ptr->next=(*top);
+    (*top)=ptr;
+}
+
+char pop(stack **top)
+{
+    char temp;
+    stack *ptr;
+    ptr=(*top);
+    temp=(*top)->data;
+    (*top)=(*top)->next;
+    free(ptr);
+    return temp;
+}
+char findMatch(char leftbrac)
+{
+    char match;
+    switch(leftbrac)
+    {
+        case ')':
+        match='(';
+        break;
+        
+        case ']':
+        match='[';
+        break;
+        
+        case '}':
+        match='{';
+        break;
+    }
+    return match;
+
+}
+
+
+
+
+char* isBalanced(char* s) {
+    stack *top;
+    char *a;
+    int flag;
+    a=(char*)malloc(sizeof(char));
+    top=NULL;
+    int i;
+    for(i=0; *(s+i)!='\0'; i++)
+    {
+        if(s[i]=='(' || s[i]=='{' || s[i]=='[' )
+            push(&top,s[i]);
+        else if(s[i]==')' || s[i]=='}' || s[i]==']')
+        {
+            char match,element; 
+            if(top==NULL)
+            {
+                flag=0;
+                break;
+            }
+            match=findMatch(s[i]);
+            element=pop(&top);
+            if(element==match)
+                flag=1;
+            else if(element!=match){ 
+                flag=0;
+                break;
+            }
+
+        }
+    }
+    if(top==NULL && flag==1)
+        {
+            a[0]='Y';
+            a[1]='E';
+            a[2]='S';
+            a[3]='\0';
+        }
+    else
+    {
+        a[0]='N';
+        a[1]='O';
+        a[2]='\0';    
+    }
+    
+return a; 
+
+
+
+}
