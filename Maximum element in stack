@@ -1,0 +1,83 @@
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+
+typedef struct stacktype
+{
+    int data;
+    struct stacktype *next;
+
+}stack;
+
+void push(stack **top,int element)
+{
+    stack *ptr;
+    ptr=(stack *)malloc(sizeof(stack));
+    ptr->data=element;
+    ptr->next=(*top);
+    (*top)=ptr;
+
+}
+void pop(stack **top)
+{
+    stack *ptr;
+    ptr=(*top) ;
+    (*top)=(*top)->next;
+    free(ptr);
+}
+void maxElement(stack *top)
+{
+    int temp;
+    temp=top->data;
+    while(top!=NULL)
+    {
+        if(top->data > temp)
+            temp=top->data;
+        top=top->next;
+    }
+    printf("%d\n",temp);
+}
+void destroyStack(stack **top)
+{
+    stack *ptr;
+    while((*top)!=NULL)
+    {
+        ptr=(*top);
+        (*top)=(*top)->next;
+        free(ptr);
+    }
+}
+
+int main() {
+    stack *top;
+    int choice,element,num;
+    top=NULL; // stack is created
+    scanf("%d",&num);
+    scanf("%d",&choice);  //*** BRO BUG IS HERE **
+    while(num!=0){
+
+            switch(choice)
+        {
+            case 1:
+            scanf("%d",&element);
+            push(&top,element);
+            break;
+
+            case 2:
+            pop(&top);
+            break;
+
+            case 3:
+            maxElement(top);
+            getch();
+            break;
+
+        }
+        num--;
+    }
+
+
+   destroyStack(&top);
+    return 0;
+}
+
